@@ -1,0 +1,23 @@
+{
+  "name": "soundbot",
+  "version": "1.0.0",
+  "description": "Discord bot to play custom sounds on demand!",
+  "main": "index.js",
+  "scripts": {
+    "test": "soundTest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Grygon/soundbot.git"
+  },
+  "author": "Grygon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Grygon/soundbot/issues"
+  },
+  "homepage": "https://github.com/Grygon/soundbot#readme",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "eslint": "^5.1.0"
+  }
+}
