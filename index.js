@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const secret = require('./secret.js');
+const secret = require('./secret.json');
 const fs = require('fs');
 
 // Hardcoded (for now) prefix
@@ -25,7 +25,7 @@ client.on('ready', () => {
 
 client.on('message', message => {
 	// Catch easy failures early
-	if (!message.content.startsWith(prefix) || message.author.bot()) return;
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	// Process message
     const args = message.content.slice(prefix.length).split(/ +/);
