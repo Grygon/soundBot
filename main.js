@@ -34,6 +34,7 @@ client.on('message', message => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
+
     // Hardcoded hidden exit command. Only for myself, and separated from standard commands due to its nature.
     // No need to have a normal file, with help etc for this.
     if (message.author.id === '122534115307159552' && commandName === "exit") {
@@ -43,6 +44,9 @@ client.on('message', message => {
             return process.exit();
         }, 100);
     }
+
+
+    console.log(`Attempted trigger ${commandName}`)
 
 
     // Existence check
@@ -61,8 +65,7 @@ client.on('message', message => {
     if (command.guildOnly && message.channel.type !== 'text') {
         return message.reply('I can\'t execute that command inside DMs!');
     // DM check
-    } else if (command.dmOnly && message.channel.type !== 'DMChannel') {
-        // TODO: Implement DM handling
+    } else if (command.dmOnly && message.channel.type !== 'dm') {
         return message.reply('I can only execute that command inside DMs!');        
     }
 

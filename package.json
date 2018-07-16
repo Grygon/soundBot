@@ -18,9 +18,11 @@
   "homepage": "https://github.com/Grygon/soundbot#readme",
   "dependencies": {
     "discord.js": "^11.3.2",
+    "download-file": "^0.1.5",
     "eslint": "^5.1.0",
     "ffmpeg-binaries": "^4.0.0",
     "node-opus": "^0.3.0",
-    "opusscript": "0.0.6"
+    "opusscript": "0.0.6",
+    "sanitize-filename": "^1.6.1"
   }
 }
