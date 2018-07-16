@@ -1,18 +1,16 @@
 const fs = require('fs');
 
 module.exports = {
-    name: 's',
+    name: 'sound',
     description: 'Play a sound!',
+    args: true,
+    aliases: ['s'],
+    guildOnly: true,
+    cooldown: 2,
     execute(message, args) {
     	// Find matching sound files
         const soundFiles = fs.readdirSync(`./sounds/${message.guild.id}`).filter(f => f.startsWith(args[0] + "."));
         if (soundFiles.length === 1) {
-        	// Check to make sure we're in a server
-        	if (!message.guild) {
-        		message.reply("Can only play sounds in a server!");
-        		throw "Can only play sounds in a server!";
-        	}
-
         	// Join the channel if possible
 			if (message.member.voiceChannel) {
 		      message.member.voiceChannel.join()
@@ -23,10 +21,8 @@ module.exports = {
 				  message.reply("Playing " + args[0] + "...");
 		        });
 		    } else {
-		      message.reply('You need to join a voice channel first!');
-		      return;
+		      return message.reply('You need to join a voice channel first!');
 		    }
-
 
         // Failures below
         } else if (soundFiles.length === 0) {
