@@ -37,7 +37,11 @@ client.on('message', message => {
     // Hardcoded hidden exit command. Only for myself, and separated from standard commands due to its nature.
     // No need to have a normal file, with help etc for this.
     if (message.author.id === '122534115307159552' && commandName === "exit") {
-        process.exit();
+        message.reply("Hi admin! Restarting bot...");
+        // Wait, otherwise it exits before it finishes sending (for some reason.......)
+        setTimeout(function() {
+            return process.exit();
+        }, 100);
     }
 
     // If we don't have it registered (either by name or by alias) then fail
@@ -50,10 +54,11 @@ client.on('message', message => {
         return message.reply("You didn\'t provide any arguments!");
     }
 
-    // Server/DM check
+    // Server check
     if (command.guildOnly && message.channel.type !== 'text') {
         return message.reply('I can\'t execute that command inside DMs!');
-    } else if (!command.guildOnly && message.channel.type !== 'DMChannel') {
+    // DM check
+    } else if (command.dmOnly && message.channel.type !== 'DMChannel') {
         // TODO: Implement DM handling
         return message.reply('I can only execute that command inside DMs!');        
     }
