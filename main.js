@@ -34,6 +34,12 @@ client.on('message', message => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
+    // Hardcoded hidden exit command. Only for myself, and separated from standard commands due to its nature.
+    // No need to have a normal file, with help etc for this.
+    if (message.author.id === '122534115307159552' && commandName === "exit") {
+        process.exit();
+    }
+
     // If we don't have it registered (either by name or by alias) then fail
     const command = client.commands.get(commandName)
         || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));

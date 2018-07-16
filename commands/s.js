@@ -8,6 +8,8 @@ module.exports = {
     guildOnly: true,
     cooldown: 2,
     execute(message, args) {
+    	// TODO: Handle (and differentiate between) files, standard media links, and youtube links. Maybe split off if necessary.
+
     	// Find matching sound files
         const soundFiles = fs.readdirSync(`./sounds/${message.guild.id}`).filter(f => f.startsWith(args[0] + "."));
         if (soundFiles.length === 1) {
