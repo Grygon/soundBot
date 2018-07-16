@@ -2,7 +2,7 @@
   "name": "soundbot",
   "version": "1.0.0",
   "description": "Discord bot to play custom sounds on demand!",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "soundTest"
   },
