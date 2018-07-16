@@ -4,7 +4,7 @@ const secret = require('./secret.json');
 const fs = require('fs');
 
 // Hardcoded (for now) prefix
-const prefix = '~';
+const prefix = '$';
 
 
 // Read in all commands from command folder
@@ -17,6 +17,9 @@ for (const file of commandFiles) {
     // with the key as the command name and the value as the exported module
     client.commands.set(command.name, command);
 }
+
+// Setup command cooldown
+const cooldowns = new Discord.Collection();
 
 // Verify server is up and running
 client.on('ready', () => {
@@ -31,10 +34,51 @@ client.on('message', message => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
-    // If we don't have it registered dynamically, ignore
-    if (!client.commands.has(commandName)) return;
+    // If we don't have it registered (either by name or by alias) then fail
+    const command = client.commands.get(commandName)
+        || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+    if (!command) return;
 
-    const command = client.commands.get(commandName);
+    // Argument check
+    if (command.args && !args.length) {
+        return message.reply("You didn\'t provide any arguments!");
+    }
+
+    // Server/DM check
+    if (command.guildOnly && message.channel.type !== 'text') {
+        return message.reply('I can\'t execute that command inside DMs!');
+    } else if (!command.guildOnly && message.channel.type !== 'DMChannel') {
+        // TODO: Implement DM handling
+        return message.reply('I can only execute that command inside DMs!');        
+    }
+
+    // Cooldown check
+    if (!cooldowns.has(command.name)) {
+        cooldowns.set(command.name, new Discord.Collection());
+    }
+
+    // Time handling
+    const now = Date.now();
+    const timestamps = cooldowns.get(command.name);
+    const cooldownAmount = (command.cooldown || 3) * 1000;
+
+    // Check cooldown
+    if (!timestamps.has(message.author.id)) {
+        timestamps.set(message.author.id, now);
+        setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+    } else {
+        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+        // If it hasn't expired, don't let it through
+        if (now < expirationTime) {
+            const timeLeft = (expirationTime - now) / 1000;
+            return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+        }
+
+        // Set cooldown
+        timestamps.set(message.author.id, now);
+        setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+    }
 
     // Otherwise, run it!
 	try {
