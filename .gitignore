@@ -3,3 +3,4 @@
 secret.json
 sounds/
 sounds/**
+node_modules/
