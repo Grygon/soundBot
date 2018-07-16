@@ -44,15 +44,18 @@ client.on('message', message => {
         }, 100);
     }
 
-    // If we don't have it registered (either by name or by alias) then fail
+
+    // Existence check
     const command = client.commands.get(commandName)
         || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     if (!command) return;
+
 
     // Argument check
     if (command.args && !args.length) {
         return message.reply("You didn\'t provide any arguments!");
     }
+
 
     // Server check
     if (command.guildOnly && message.channel.type !== 'text') {
@@ -62,6 +65,7 @@ client.on('message', message => {
         // TODO: Implement DM handling
         return message.reply('I can only execute that command inside DMs!');        
     }
+
 
     // Cooldown check
     if (!cooldowns.has(command.name)) {
@@ -90,6 +94,7 @@ client.on('message', message => {
         timestamps.set(message.author.id, now);
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
+
 
     // Otherwise, run it!
 	try {
