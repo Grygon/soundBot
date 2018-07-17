@@ -1,10 +1,10 @@
 const fs = require('fs');
 
 module.exports = {
-    name: 'sound',
+    name: 'play',
     description: 'Play a sound!',
     args: true,
-    aliases: ['s'],
+    aliases: ['p','sound'],
     guildOnly: true,
     cooldown: 2,
     execute(message, args) {
@@ -18,8 +18,8 @@ module.exports = {
 		      message.member.voiceChannel.join()
 		        .then(connection => { // Connection is an instance of VoiceConnection
 	        	  // Play found sound file
-	        	  console.log("Playing " + args[0] + "...");
-	        	  const dispatcher = connection.playFile(soundFiles[0]);
+	        	  console.log(`Playing ${args[0]} from file ${soundFiles[0]}`);
+	        	  const dispatcher = connection.playFile(`./sounds/${message.guild.id}/${soundFiles[0]}`);
 				  message.reply("Playing " + args[0] + "...");
 		        });
 		    } else {

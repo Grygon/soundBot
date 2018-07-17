@@ -20,7 +20,7 @@ module.exports = {
 			var context = 0;
 
 			// Check that server doesn't have too many sounds...
-			if(fs.readdirSync(`./sounds/${message.guild.id}`) >= 50) {
+			if(fs.readdirSync(`./sounds/${message.guild.id}`).length >= 50) {
 				message.channel.send("This server already has 50 custom sounds! Please delete some!")
 
 				// TODO: Remove this one deleting is possible
@@ -38,10 +38,13 @@ module.exports = {
 
 			// When a message is sent in the DM channel...
 			collector.on('collect', m => {
-				// I'm sure I could use switches here
-				// I probably should too
-				// Maybe I'll refactor this eventually
-				if (context == 0) {
+				// Let us cancel at any time
+				if (m.content === "cancel") {
+					console.log("New sound cancelled");
+
+					m.channel.send("Okay, cancelling!");
+					collector.stop('cancelled');
+				} else if (context == 0) {
 					// Naming
 					name = m.content;
 
@@ -56,24 +59,30 @@ module.exports = {
 					// File registration
 					files = m.attachments.array();
 					if(files.length==1) {
-						const audioTypes = "wav|mp3|mp4|avi";
-						if (files[0].filename.match(`/\.(?:${audioTypes})$/i`)) {
+						
+						// Manual list of acceptable audio formats.
+						// If there's a better solution, use it.
+						formats = ['mp3','mp4','wav'];
+
+						if (formats.includes(files[0].filename.substr(files[0].filename.length - 3))) {
 							// This is it... saving here
 							const options = {
 								directory: `./sounds/${message.guild.id}`,
-								filename: `${name} ${files[0].filename.substr(files[0].filename.length - 4)}`
+								filename: `${name}.${files[0].filename.substr(files[0].filename.length - 3)}`
 							};
 
 							download(files[0].url, options, function(err) {
 								// Post-download things
 								if (err) throw err;
 								m.channel.send(`Successfully received file and registered as ${name}. \n 
-									Please give it a try in the server with $sound ${name} !`)
-								message.channel.send(`${message.author} has added a new sound, ${name}!`);
+Please give it a try in the server with $play ${name} !`)
+								message.channel.send(`${message.author} has added a new sound, try it out with $play ${name}!`);
 								context = 2;
 							});
 
 						} else {
+
+							console.log(files[0].filename.substr(files[0].filename.length - 3));
 							m.channel.send("Please send a valid audio file!");
 							m.channel.send("Valid types include " + audioTypes);
 						}
@@ -85,9 +94,9 @@ module.exports = {
 			});
 
 			// When we're done, if it hasn't run all the way through let them know.
-			collector.on('end', collected => {
-				if (context !== 2) {
-			   		channel.send("Timed out, please try again...");
+			collector.on('end', (collected, r) => {
+				if (context !== 2 && r !== 'cancelled') {
+			   		message.author.send("Timed out, please try again...");
 				}
 			});
 
