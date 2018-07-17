@@ -20,7 +20,6 @@ module.exports = {
 	        	  // Play found sound file
 	        	  console.log(`Playing ${args[0]} from file ${soundFiles[0]}`);
 	        	  const dispatcher = connection.playFile(`./sounds/${message.guild.id}/${soundFiles[0]}`);
-				  message.reply("Playing " + args[0] + "...");
 		        });
 		    } else {
 		      return message.reply('You need to join a voice channel first!');
