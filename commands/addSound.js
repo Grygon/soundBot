@@ -22,12 +22,8 @@ module.exports = {
 			// Check that server doesn't have too many sounds...
 			if(fs.readdirSync(`./sounds/${message.guild.id}`).length >= 50) {
 				console.log("Server full!");
-				message.channel.send("This server already has 50 custom sounds! Please delete some!")
+				message.channel.send("This server already has 50 custom sounds! Please have an admin delete some!")
 
-				// TODO: Remove this one deleting is possible
-				// God... figuring out who can delete what is going to be hell isn't it... Maybe create a metadata file in the server folder with info?
-				message.channel.send("User sound deleting is not yet implemented, please contact the bot admin (@Grygon)");
-				client.fetchUser("122534115307159552").createDM("Someone's trying to delete things");
 
 				return;
 			}
