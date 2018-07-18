@@ -57,15 +57,18 @@ client.on('message', message => {
 
     // Argument check
     if (command.args && !args.length) {
+        console.log("Missing arguments!");
         return message.reply("You didn\'t provide any arguments!");
     }
 
 
     // Server check
     if (command.guildOnly && message.channel.type !== 'text') {
+        console.log("Guild only command");
         return message.reply('I can\'t execute that command inside DMs!');
     // DM check
     } else if (command.dmOnly && message.channel.type !== 'dm') {
+        console.log("DM only command");
         return message.reply('I can only execute that command inside DMs!');        
     }
 
@@ -90,6 +93,7 @@ client.on('message', message => {
         // If it hasn't expired, don't let it through
         if (now < expirationTime) {
             const timeLeft = (expirationTime - now) / 1000;
+            console.log("Still on cooldown...");
             return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
         }
 

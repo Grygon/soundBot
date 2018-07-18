@@ -19,14 +19,9 @@ module.exports = {
 			const collector = channel.createMessageCollector(filter, { time: 300000 });
 			var context = 0;
 
-			// Check that server exists
-			var dir = `./sounds/${message.guild.id}`;
-			if (!fs.existsSync(dir)){
-			    fs.mkdirSync(dir);
-			}
-
 			// Check that server doesn't have too many sounds...
-			if(fs.readdirSync(dir).length >= 50) {
+			if(fs.readdirSync(`./sounds/${message.guild.id}`).length >= 50) {
+				console.log("Server full!");
 				message.channel.send("This server already has 50 custom sounds! Please delete some!")
 
 				// TODO: Remove this one deleting is possible
@@ -42,7 +37,7 @@ module.exports = {
 			message.author.send("Okay, let's add a new sound! What name do you want?",);
 			message.author.send("Cancel at any time by sending \"cancel\"",);
 
-			// When a message is sent in the DM channel... 
+			// When a message is sent in the DM channel...
 			collector.on('collect', m => {
 				// Let us cancel at any time
 				if (m.content === "cancel") {
@@ -73,7 +68,7 @@ module.exports = {
 						if (formats.includes(files[0].filename.substr(files[0].filename.length - 3))) {
 							// This is it... saving here
 							const options = {
-								directory: dir,
+								directory: `./sounds/${message.guild.id}`,
 								filename: `${name}.${files[0].filename.substr(files[0].filename.length - 3)}`
 							};
 
@@ -87,6 +82,8 @@ Please give it a try in the server with $play ${name} !`)
 							});
 
 						} else {
+
+							console.log(files[0].filename.substr(files[0].filename.length - 3));
 							m.channel.send("Please send a valid audio file!");
 							m.channel.send("Valid types include " + audioTypes);
 						}
