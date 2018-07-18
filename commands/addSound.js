@@ -35,8 +35,8 @@ module.exports = {
 			// Successful, start adding process!
 			message.channel.send("Adding new sound via DM...");
 			message.author.send("Okay, let's add a new sound! What name do you want?",);
-			message.author.send("Cancel at any time by sending \"cancel\"",);
-
+			message.author.send("Cancel at any time by sending \"cancel\"",)
+;
 			// When a message is sent in the DM channel...
 			collector.on('collect', m => {
 				// Let us cancel at any time
@@ -51,11 +51,16 @@ module.exports = {
 
 					name = sanitize(name);
 
-					console.log(`Sound name: ${name}`);
+					if (fs.readdirSync(`./sounds/${message.guild.id}`).map(f => f.substring(0,f.length - 4)).includes(name)) {
+						console.log(`Attempted duplicate registration`);
+						m.channel.send("That name is already taken, please select another!");
+					} else {
+						console.log(`Sound name: ${name}`);
 
-					m.channel.send("Name registered as " + name);
-					m.channel.send("Please send a sound file to associate with that name!");
-					context = 1;
+						m.channel.send("Name registered as " + name);
+						m.channel.send("Please send a sound file to associate with that name!");
+						context = 1;
+					}
 				} else if (context == 1) {
 					// File registration
 					files = m.attachments.array();
