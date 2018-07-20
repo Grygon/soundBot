@@ -76,6 +76,24 @@ module.exports = {
 							download(files[0].url, options, function(err) {
 								// Post-download things
 								if (err) throw err;
+
+								// Setup metadata
+								var data = {};
+								data.table = [];
+
+								// Save timestamp
+								data.table.push({time: Date.now()});
+
+								// Save adding user
+								data.table.push({user: message.author.id});
+
+								// Save metadata to file
+								fs.writeFile (`./sounds/${message.guild.id}/${name}.json`, JSON.stringify(data), function(err) {
+								    if (err) throw err;
+								    console.log('Metadata written'); 
+								    }
+								);
+
 								m.channel.send(`Successfully received file and registered as ${name}. \n 
 Please give it a try in the server with $play ${name} !`)
 								message.channel.send(`${message.author} has added a new sound, try it out with $play ${name}!`);

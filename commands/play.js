@@ -11,7 +11,7 @@ module.exports = {
     	// TODO: Handle (and differentiate between) files, standard media links, and youtube links. Maybe split off if necessary.
 
     	// Find matching sound files
-        const soundFiles = fs.readdirSync(`./sounds/${message.guild.id}`).filter(f => f.startsWith(args[0] + "."));
+        const soundFiles = fs.readdirSync(`./sounds/${message.guild.id}`).filter(f => f.startsWith(args[0] + ".").filter(f => !f.endsWith(".json")));
         if (soundFiles.length === 1) {
         	// Join the channel if possible
 			if (message.member.voiceChannel) {
@@ -20,6 +20,7 @@ module.exports = {
 	        	  // Play found sound file
 	        	  console.log(`Playing ${args[0]} from file ${soundFiles[0]}`);
 	        	  const dispatcher = connection.playFile(`./sounds/${message.guild.id}/${soundFiles[0]}`);
+				  message.reply("Playing " + args[0] + "...");
 		        });
 		    } else {
 		      return message.reply('You need to join a voice channel first!');
