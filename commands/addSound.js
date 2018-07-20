@@ -79,13 +79,12 @@ module.exports = {
 
 								// Setup metadata
 								var data = {};
-								data.table = [];
 
 								// Save timestamp
-								data.table.push({time: Date.now()});
+								data.time = Date.now();
 
 								// Save adding user
-								data.table.push({user: message.author.id});
+								data.user = message.author.id;
 
 								// Save metadata to file
 								fs.writeFile (`./sounds/${message.guild.id}/${name}.json`, JSON.stringify(data), function(err) {

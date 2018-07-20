@@ -9,6 +9,7 @@ module.exports = {
     execute(message, args) {
         const file = args[0];
         const prefix = '$';
+        const serverDir = `./sounds/${message.guild.id}`;
 
 
         // Existence check
@@ -19,14 +20,13 @@ module.exports = {
         }
 
         // Grab metadata
-        fs.readFile(`${serverDir}/${sound}.json`, function(err, file) {
-            if (err) throw err;
+        var content = JSON.parse(fs.readFileSync(`${serverDir}/${file}.json`, 'utf8'));
 
-            const content = JSON.parse(file);
-        });
+        console.log("Setting up info data...");
+        console.log(content);
 
         // Format (using a pushed-data method for extendability)
-        const data = [];
+        var data = [];
         data.push(`Information on the sound ${file}\n`);
         data.push(`Added by ${content.user} at ${(new Date(content.time)).toString()}\n`);
 
