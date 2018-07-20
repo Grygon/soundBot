@@ -1,4 +1,5 @@
 const fs = require('fs');
+const Discord = require('discord.js');
 
 module.exports = {
     name: 'info',
@@ -24,12 +25,28 @@ module.exports = {
 
         console.log("Setting up info data...");
         console.log(content);
+        
+        message.guild.fetchMember(content.user).then(user => {
+            // Format (using a pushed-data method for extendability)
+            var data = [];
+            data.push(`Information on the sound ${file}\n`);
+            data.push(`Added by ${user.displayName} on ${formatDate(content.time)}\n`);
 
-        // Format (using a pushed-data method for extendability)
-        var data = [];
-        data.push(`Information on the sound ${file}\n`);
-        data.push(`Added by ${content.user} at ${(new Date(content.time)).toString()}\n`);
-
-        return message.channel.send(data);
+            return message.channel.send(data);
+        });
     },
 };
+
+
+// Thanks to https://stackoverflow.com/questions/23593052/format-javascript-date-to-yyyy-mm-dd
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
