@@ -19,7 +19,6 @@ module.exports = {
         } 
 
         // Find original adder
-
         fs.readFile(`${serverDir}/${sound}.json`, function(err, file) {
             if (err) throw err;
 
@@ -29,6 +28,7 @@ module.exports = {
 
         // Permissions check
         // For now, assume that people who can manage messages are also allowed to delete sound commands
+        // Author is always allowed to delete their own files
         if(message.member.hasPermission("MANAGE_MESSAGES") || (message.author.id === user)) {
 
             // Delete all matches (yes all, so it's compatible with metadata)
