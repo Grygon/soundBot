@@ -13,11 +13,15 @@ Instead, you can install in a few simple steps:
 3. Once all packages have been installed, create a file named `secret.json` in the folder. Format it as follows:
 
 
-`{
-        "token": "TOKEN"
-}`
+```
+{
 
-Insert the token you'll be using for your bot in place of TOKEN. If you need help, [here's a handy guide](https://discordjs.guide/#/preparations/setting-up-a-bot-application), courtesy of discord.js
+        "token": "TOKEN"
+        
+}
+```
+
+   Insert the token you'll be using for your bot in place of TOKEN. If you need help, [here's a handy guide](https://discordjs.guide/#/preparations/setting-up-a-bot-application), courtesy of discord.js
 
 4. Run using `node .`
 
