@@ -30,3 +30,7 @@ Instead, you can install in a few simple steps:
 
 
 This bot was created with the goal of doing one thing very well. If you encounter any issues please report them or submit a pull request, and hopefully it'll get taken care of quickly.
+
+## Using
+
+You can access all available commands using $list. Soundbot should then walk you through the various options you have.
