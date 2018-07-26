@@ -27,7 +27,7 @@ module.exports = {
 		    }
 
         // Failures below
-        } else if (soundFiles.length === 0) {\
+        } else if (soundFiles.length === 0) {
         	message.reply("Don\'t have that sound registered!");
         } else {
         	throw "Too many sound files for that name exist!";
